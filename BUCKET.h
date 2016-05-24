@@ -2,11 +2,11 @@
 #include<vector>
 using namespace std;
 template<class K,class V>
-//¶¨Òå¹þÏ£Í°µÄ½ÚµãµÄ½á¹¹Ìå
+//å®šä¹‰å“ˆå¸Œæ¡¶çš„èŠ‚ç‚¹çš„ç»“æž„ä½“
 struct HashTableNode
 {
-	K _key;//¹Ø¼ü×Ö
-	V _value;//¹Ø¼ü×Ö¶ÔÓ¦µÄÖµÓò
+	K _key;//å…³é”®å­—
+	V _value;//å…³é”®å­—å¯¹åº”çš„å€¼åŸŸ
 	HashTableNode<K,V>* _next;
 
 	HashTableNode(const K& key,const V& value):_key(key)
@@ -19,12 +19,12 @@ template<class K,class V>
 class HashTableBucket
 {
 	typedef HashTableNode<K,V>  Node;
-	typedef HashTableNode<K,V> Table;
+	typedef TableNode<K,V> Table;
 private:
 	vector<Node*> _tables;
 	size_t _size;
 public:
-	HashTableBucket(size_t capacity):_size(0)
+	HashTableBucket(size_t capacity=10):_size(0)
 	{
 	 _tables.resize(_Getnextprime(capacity));
 	}                                  
@@ -58,16 +58,16 @@ bool Insert(const K& key,const V& value)
 		_Checkcapacity();
 		size_t index=_HashFunc(key,_tables.size());
 		Node* cur=_tables[index];
-		while(cur)//¼ì²éÁ´±íÉÏÊÇ·ñ´æÔÚÒª²åÈëµÄ½Úµã
+		while(cur)//æ£€æŸ¥é“¾è¡¨ä¸Šæ˜¯å¦å­˜åœ¨è¦æ’å…¥çš„èŠ‚ç‚¹
 		{
-			//·ÀÈßÓà
+			//é˜²å†—ä½™
 			 if(cur->_key ==key)
 			 {
 			  return false;
 			 }
 			 cur=cur->_next;
 		}
-        //²»´æÔÚÔòÍ·²å
+        //ä¸å­˜åœ¨åˆ™å¤´æ’
 		Node* tmp=new Node(key,value);
 		tmp->_next=_tables[index];
 		_tables[index]=tmp;
@@ -84,7 +84,7 @@ bool Insert(const K& key,const V& value)
    {
      return false;
    }
-   //ÈôÉ¾³ýµÄÎªÍ·½áµã
+   //è‹¥åˆ é™¤çš„ä¸ºå¤´ç»“ç‚¹
 	   if(cur->_key==key)
 	   {
 		Node* tmp=cur;
@@ -93,7 +93,7 @@ bool Insert(const K& key,const V& value)
 		delete tmp;
 		return true;
 	   }
-   //ÈôÎª·ÇÍ·½áµã
+   //è‹¥ä¸ºéžå¤´ç»“ç‚¹
 	   Node* prev=cur;
 	   cur=cur->_next; 
 	   while(cur)
@@ -170,7 +170,7 @@ protected:
 void _Checkcapacity()
 	{
 		if(_size==_tables.size())
-		{   //À©ÈÝ
+		{   //æ‰©å®¹
 			size_t nextprime=_Getnextprime(_size);
 			vector<Node*> newtables;
 			newtables.resize(nextprime);
@@ -179,10 +179,10 @@ void _Checkcapacity()
 				  Node* cur=_tables[i];
 				  while(cur)
 				  {
-					 //Õª½Úµã
+					 //æ‘˜èŠ‚ç‚¹
 					  Node* tmp=cur;
 					  cur=cur->_next ;
-					//Í·²å
+					//å¤´æ’
 					 size_t index=_HashFunc(tmp->_key,newtables.size());
 					 tmp->_next=newtables[index];
 					 newtables[index]=tmp;
