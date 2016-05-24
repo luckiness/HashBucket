@@ -48,8 +48,8 @@ public:
    if(this!=&t)
    {
    Table tmp(t);
-   _tables.swap(tmp);
-   swap(_size,tmp-ize);
+   _tables.swap(tmp._tables);
+   swap(_size,tmp._size);
    }
    return *this;
  }
