@@ -170,7 +170,7 @@ protected:
 void _Checkcapacity()
 	{
 		if(_size==_tables.size())
-		{   //扩容
+		{    //素数表(使用素数做除数可以减少哈希冲突)扩容
 			size_t nextprime=_Getnextprime(_size);
 			vector<Node*> newtables;
 			newtables.resize(nextprime);
